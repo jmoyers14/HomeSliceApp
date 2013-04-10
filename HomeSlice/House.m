@@ -27,6 +27,17 @@
     return self;
 }
 
+- (id) initWithHouseId:(NSString*)houseId
+{
+    self = [super init];
+    if(self)
+    {
+        self.house_id = houseId;
+        self.house_name = @"well do this later";
+    }
+    return self;
+}
+
 -(NSDictionary *)postNewHouse:(NSString *)houseName withRent:(NSString *)rent
 {
     
@@ -62,4 +73,7 @@
     
     return dict;
 }
+
+
+
 @end

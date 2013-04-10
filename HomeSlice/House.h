@@ -14,6 +14,8 @@
 @property (nonatomic, strong) NSString *house_name;
 @property (nonatomic, strong) NSNumber *rent;
 
-- (id)initWithDictionary:(NSDictionary *)dict;
+
+- (id) initWithDictionary:(NSDictionary *)dict;
+- (id) initWithHouseId:(NSString*)houseId;
 
 @end

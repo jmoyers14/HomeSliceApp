@@ -39,6 +39,10 @@
     return self;
 }
 
+
+/*
+ *Init returning user
+ */
 -(id) initWithLoginDictionary:(NSDictionary *)dict
 {
     self = [super init];

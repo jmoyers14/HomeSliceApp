@@ -7,17 +7,40 @@
 //
 
 #import "AppDelegate.h"
-
+#import "GAI.h"
+#import "Singleton.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    //set up UIAppearance
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"NavBarTrim.png"] forBarMetrics:UIBarMetricsDefault];
     [[UITabBar appearance] setSelectionIndicatorImage:[[UIImage alloc] init]];
     [[UIBarButtonItem appearance] setTintColor:[UIColor blueColor]];
     
+    /*
+     *Register PARSE application ID
+     */
     [Parse setApplicationId:@"xdX1BJEdWu4leiKM2FRpsYHsh8sDTYsmjXGXNW8k"
                   clientKey:@"fqf3NHjKiJ3r3QJcPPWAuIxf5gcwm11bnUPokV4H"];
+    
+    
+    
+    /*
+     *Register Google Analytics
+     */
+    // Optional: automatically send uncaught exceptions to Google Analytics.
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
+    [GAI sharedInstance].dispatchInterval = 20;
+    // Optional: set debug to YES for extra debugging information.
+    [GAI sharedInstance].debug = YES;
+    // Create tracker instance.
+    id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:@"UA-40015847-1"];
+    ((Singleton *)[Singleton sharedInstance]).tracker = tracker;
+    
+    
     return YES;
 }
 							

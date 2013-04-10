@@ -65,6 +65,21 @@
     }
 }
 
+
+
+/*
+ * Sign up with email / password
+ */
+
+
+
+/*
+ * Sign up with facebook
+ */
+
+
+
+
 #pragma -- mark UITextFieldDelegate
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField

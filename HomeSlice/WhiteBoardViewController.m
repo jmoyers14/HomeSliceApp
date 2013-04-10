@@ -1,18 +1,18 @@
 //
-//  SuppliesViewController.m
+//  WhiteBoardViewController.m
 //  HomeSlice
 //
-//  Created by Jeremy Moyers on 2/20/13.
+//  Created by Jeremy Moyers on 4/3/13.
 //  Copyright (c) 2013 Jeremy Moyers. All rights reserved.
 //
 
-#import "SuppliesViewController.h"
+#import "WhiteBoardViewController.h"
 
-@interface SuppliesViewController ()
+@interface WhiteBoardViewController ()
 
 @end
 
-@implementation SuppliesViewController
+@implementation WhiteBoardViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,7 +31,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [self.tabBarController.tabBar setBackgroundImage:[UIImage imageNamed:@"TabBarBackgroundBlank.png"]];
-
+    
 }
 
 - (void)didReceiveMemoryWarning

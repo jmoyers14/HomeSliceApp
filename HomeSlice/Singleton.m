@@ -10,6 +10,9 @@
 
 @implementation Singleton
 @synthesize user = _user;
+@synthesize roommates = _roommates;
+@synthesize tracker = _tracker;
+
 static Singleton *sharedInstance = nil;
 
 + (Singleton *)sharedInstance
@@ -38,6 +41,27 @@ static Singleton *sharedInstance = nil;
     return self;
 }
 
+- (void) createRoomatesWithData:(NSArray *)data
+{
+    self.roommates = [[NSMutableArray alloc] init];
+    
+    
+    for(NSDictionary *dict in data)
+    {
+        Person *p = [[Person alloc] initWithDictionary:dict];
+        [self.roommates addObject:p];
+    }
+}
 
+- (void) refreshRoommates:(NSArray *)data
+{
+    [self.roommates removeAllObjects];
+    
+    for(NSDictionary *dict in data)
+    {
+        Person *p = [[Person alloc] initWithDictionary:dict];
+        [self.roommates addObject:p];
+    }
+}
 
 @end

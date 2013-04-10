@@ -14,6 +14,8 @@
 @synthesize rent = _rent;
 @synthesize name = _name;
 @synthesize house = _house;
+@synthesize paymentHolder = _paymentHolder;
+@synthesize debt = _debt;
 
 
 -(id) initWithDictionary:(NSDictionary*) dict
@@ -21,7 +23,12 @@
     self = [super init];
     if (self)
     {
-        
+        self.name = [dict objectForKey:@"name"];
+        self.person_id = [dict objectForKey:@"objectId"];
+        self.house = [[House alloc] initWithHouseId:[dict objectForKey:@"houseId"]];
+        self.debt = [[dict objectForKey:@"debt"] floatValue];
+        self.rent = [dict objectForKey:@"rent"];
+        self.paymentHolder = @"0.00";
     }
     return self;
 }
@@ -32,8 +39,11 @@
     if (self)
     {
         NSDictionary *dict;
+        self.name = fullName;
         dict = [self postNewPerson:fullName];
         self.person_id = [dict objectForKey:@"objectId"];
+        self.debt = [[dict objectForKey:@"debt"] floatValue];
+        self.paymentHolder = @"0.00";
     }
     return self;
 }
@@ -46,7 +56,7 @@
         NSDictionary *personData;
         NSMutableDictionary *queryData = [[NSMutableDictionary alloc] init];
         NSArray *personArray;
-        
+
         [queryData setObject:personId forKey:@"objectId"];
         
         personArray = [Network makeGetRequestWithData:queryData toURL:PERSON_URL];
@@ -54,16 +64,22 @@
         self.person_id = [personData objectForKey:@"objectId"];
         self.name = [personData objectForKey:@"name"];
         self.rent = [NSNumber numberWithFloat:[[personData objectForKey:@"rent"] floatValue]];
-        self.house.house_id = [personData objectForKey:@"house_id"];
+        self.house = [[House alloc] initWithHouseId:(NSString *)[personData objectForKey:@"house_id"]];
+        self.paymentHolder = @"0.00";
+        self.debt = 0.0;
     }
     return self;
 }
+
+
 
 -(NSDictionary *)postNewPerson:(NSString *)fullName
 {
     
     NSMutableDictionary *postDict = [[NSMutableDictionary alloc] init];
     [postDict setObject:fullName forKey:@"name"];
+    [postDict setObject:[NSNumber numberWithFloat:self.debt] forKey:@"debt"];
+    [postDict setObject:[NSNumber numberWithFloat:0.0] forKey:@"rent"];
     
     NSError *error;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:postDict options:NSJSONWritingPrettyPrinted error:&error];
@@ -145,6 +161,103 @@
     return dict;
 }
 
+- (NSDictionary *)updateDataByAmount:(float)amount
+{
+    self.debt = self.debt + amount;
+    
+    if(self.debt < 0)
+    {
+        self.debt = 0;
+    }
+    
+    NSMutableDictionary *putDict = [[NSMutableDictionary alloc] init];
+
+    [putDict setObject:[NSNumber numberWithFloat:self.debt] forKey:@"debt"];
+    
+    NSError *error;
+    NSData *putData = [NSJSONSerialization dataWithJSONObject:putDict
+                                                      options:NSJSONWritingPrettyPrinted
+                                                        error:&error];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    NSString *url = [NSString stringWithFormat:@"%@/%@", PERSON_URL, self.person_id];
+    [request setURL:[NSURL URLWithString: url]];
+    
+    [request setHTTPMethod:@"PUT"];
+    [request addValue:HTTP_APPID forHTTPHeaderField:@"X-Parse-Application-Id"];
+    [request addValue:HTTP_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+    [request setValue:HTTP_CONT_TYPE forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:putData];
+    
+    NSURLResponse *response;
+    NSError *err;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+    
+    
+    if(responseData == nil)
+    {
+        if(err)
+        {
+            NSLog(@"Error updating debt: %@", error.localizedDescription);
+        }
+    }
+    else
+    {
+        
+    }
+    
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&err];
+    return dict;
+}
+
+- (NSDictionary *)updateRentToAmount:(float)amount
+{
+    self.rent = [NSNumber numberWithFloat:amount];
+    
+
+    
+    NSMutableDictionary *putDict = [[NSMutableDictionary alloc] init];
+    
+    [putDict setObject:self.rent forKey:@"rent"];
+    
+    NSError *error;
+    NSData *putData = [NSJSONSerialization dataWithJSONObject:putDict
+                                                      options:NSJSONWritingPrettyPrinted
+                                                        error:&error];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    NSString *url = [NSString stringWithFormat:@"%@/%@", PERSON_URL, self.person_id];
+    [request setURL:[NSURL URLWithString: url]];
+    
+    [request setHTTPMethod:@"PUT"];
+    [request addValue:HTTP_APPID forHTTPHeaderField:@"X-Parse-Application-Id"];
+    [request addValue:HTTP_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+    [request setValue:HTTP_CONT_TYPE forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:putData];
+    
+    NSURLResponse *response;
+    NSError *err;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+    
+    
+    if(responseData == nil)
+    {
+        if(err)
+        {
+            NSLog(@"Error updating rent: %@", error.localizedDescription);
+        }
+    }
+    else
+    {
+        
+    }
+    
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&err];
+    return dict;
+    
+}
+
+
 - (void) joinHouseWithName:(NSString *)name
 {
     NSMutableDictionary *houseDict = [[NSMutableDictionary alloc] init];
@@ -152,6 +265,7 @@
     NSArray *returnArray = [Network makeGetRequestWithData:houseDict toURL:HOUSE_URL];
     NSDictionary *returnData = [returnArray objectAtIndex:0];
     NSString *houseId = [returnData objectForKey:@"objectId"];
+    self.house = [[House alloc] initWithHouseId:houseId];
     [self createRelationshipForPersonWithHouse:houseId];
 }
 

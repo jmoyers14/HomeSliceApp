@@ -10,14 +10,19 @@
 #import "User.h"
 #import "Person.h"
 #import "House.h"
+#import "GAI.h"
 
 @interface Singleton : NSObject
 
 @property (nonatomic, strong) User *user;
 @property (nonatomic, strong) House *house;
+@property (nonatomic, strong) NSMutableArray *roommates;
+@property (nonatomic, strong) id<GAITracker> tracker;
 
 +(id)sharedInstance;
 
+
+- (void) createRoomatesWithData:(NSArray *)data;
 
 
 @end

@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GraphCell.h"
+#import "ExpensesViewController.h"
+@interface HomeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, GraphCellProtocol>
 
-@interface HomeViewController : UIViewController
 
+
+@property (strong, nonatomic) NSMutableArray *roommates;
+@property (strong, nonatomic) IBOutlet UITableView *tView;
+
+
+-(void)showExpensesFor:(NSInteger)index;
+-(void)updateRentForPerson:(NSInteger)index byAmount:(float)rent;
 @end

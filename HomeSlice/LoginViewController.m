@@ -30,6 +30,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.email becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -50,6 +51,18 @@
     ((Singleton *)[Singleton sharedInstance]).user = [[User alloc] initWithLoginDictionary:dict];
     
 }
+
+/*
+ * Log user in with email / password
+ */
+
+
+/*
+ * Log user in with facebook
+ */
+
+
+
 
 #pragma -- mark UITextFieldDelegate
 
