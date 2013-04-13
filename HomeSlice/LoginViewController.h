@@ -14,6 +14,6 @@
 @property (nonatomic, strong) IBOutlet CustomTextField *email;
 @property (nonatomic, strong) IBOutlet CustomTextField *password;
 
-- (void) loginUser;
+- (BOOL) loginUser;
 
 @end

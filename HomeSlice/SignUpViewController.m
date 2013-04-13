@@ -34,7 +34,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)submitUserInfo
+/*
+ * Sign up with email / password
+ */
+- (BOOL)submitUserInfo
 {
 
     NSString *username = self.username.text;
@@ -42,34 +45,61 @@
     NSString *fullName = self.fullName.text;
     
     NSString *confirmPassword = self.confirmPassword.text;
-    
-    if([username isEqualToString:@""])
+    if([fullName isEqualToString:@""])
     {
-        self.usernameWarning.text = @"Please input username.";
+        [self showMessageWithTitle:@"Input error:" andMessage:@"Please input full name"];
+    }
+    else if([username isEqualToString:@""])
+    {
+        [self showMessageWithTitle:@"Input error:" andMessage:@"Please input username"];
+        return NO;
     }
     else if([password isEqualToString:@""]|| [confirmPassword isEqualToString:@""])
     {
-        self.passwordWarning.text = @"Please enter password and confirmation";
+        [self showMessageWithTitle:@"Input error" andMessage:@"please enter password and confirmation"];
+        return NO;
     }
     if(![password isEqualToString:confirmPassword])
     {
-        self.passwordWarning.text = @"password confirmation failed";
+        [self showMessageWithTitle:@"Passowrd error" andMessage:@"Password confirmation failed"];
+        return NO;
     }
     else
     {
         NSMutableDictionary *userDictionary = [[NSMutableDictionary alloc] init];
         [userDictionary setObject:username forKey:@"username"];
         [userDictionary setObject:password forKey:@"password"];
-        [userDictionary setObject:fullName forKey:@"fullName"];
-        ((Singleton*)[Singleton sharedInstance]).user = [[User alloc] initWithDictionary:userDictionary];
+        
+        
+        //attempt user signup
+        NSDictionary *dict = [Network postObjectWithData:userDictionary toURL:USERS_URL];
+        
+        if(dict == nil)
+        {
+            [self showMessageWithTitle:@"error:" andMessage:@"check network connection"];
+            return NO;
+        }
+        if([dict objectForKey:@"error"] != nil)
+        {
+            NSString *code = [NSString stringWithFormat:@"Error code:%@", [dict objectForKey:@"code"]];
+            NSString *message = [dict objectForKey:@"error"];
+            [self showMessageWithTitle:code andMessage:message];
+            return NO;
+        }
+        else
+        {
+            [userDictionary setObject:[dict objectForKey:@"sessionToken"] forKey:@"sessionToken"];
+            [userDictionary setObject:[dict objectForKey:@"objectId"] forKey:@"objectId"];
+            [userDictionary setObject:fullName forKey:@"fullName"];
+            ((Singleton*)[Singleton sharedInstance]).user = [[User alloc] initAfterSignup:userDictionary];
+            return YES;
+        }
     }
 }
 
 
 
-/*
- * Sign up with email / password
- */
+
 
 
 
@@ -79,6 +109,16 @@
 
 
 
+- (void) showMessageWithTitle:(NSString *)title andMessage:(NSString *) message
+{
+    UIAlertView *mess = [[UIAlertView alloc] initWithTitle:title
+                                                   message:message
+                                                  delegate:nil
+                                         cancelButtonTitle:@"OK"
+                                         otherButtonTitles:nil];
+    
+    [mess show];
+}
 
 #pragma -- mark UITextFieldDelegate
 
@@ -95,8 +135,8 @@
     else if(textField == self.confirmPassword)
     {
         [self resignFirstResponder];
-        [self submitUserInfo];
-        if(((Singleton*)[Singleton sharedInstance]).user.loggedIn)
+        BOOL doLogin = [self submitUserInfo];
+        if(doLogin)
         {
             [self performSegueWithIdentifier:@"GoToChoice" sender:self];
         }

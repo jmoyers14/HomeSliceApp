@@ -21,8 +21,12 @@
 
 
 - (BOOL) confirmPassword:(NSString*)password with:(NSString*)confPassword;
-- (id)initWithDictionary:(NSDictionary *)dict;
+- (id)initAfterSignup:(NSDictionary *)dict;
 - (id) initWithLoginDictionary:(NSDictionary *)dict;
+- (id) initAfterLogin:(NSDictionary *)dict;
+
+
+
 - (NSDictionary *)registerUserWithPassword:(NSString *)password;
 - (NSDictionary *)createRelationShipForUser:(NSString *)userId andPerson:(NSString *)personId;
 - (NSDictionary *)loginWithUsername:(NSString *)username andPassword:(NSString *)password;

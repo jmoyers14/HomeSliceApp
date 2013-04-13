@@ -40,21 +40,53 @@
 }
 
 
-- (void)loginUser
-{
-    NSString *username = self.email.text;
-    NSString *password = self.password.text;
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    [dict setObject:username forKey:@"username"];
-    [dict setObject:password forKey:@"password"];
-    
-    ((Singleton *)[Singleton sharedInstance]).user = [[User alloc] initWithLoginDictionary:dict];
-    
-}
 
 /*
  * Log user in with email / password
  */
+- (BOOL)loginUser
+{
+    NSString *username = self.email.text;
+    NSString *password = self.password.text;
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSDictionary *userData;
+    [dict setObject:username forKey:@"username"];
+    [dict setObject:password forKey:@"password"];
+    
+    if([username isEqualToString:@""])
+    {
+        [self showMessageWithTitle:@"Input error" andMessage:@"Please enter a username"];
+        return NO;
+    }
+    else if([password isEqualToString:@""])
+    {
+        return NO;
+        [self showMessageWithTitle:@"Input error" andMessage:@"Please enter a password."];
+    }
+    else
+    {
+        userData = [Network makeLoginGetRequestWithData:dict toURL:LOGIN_URL];
+        if(userData == nil)
+        {
+            [self showMessageWithTitle:@"Login Error" andMessage:@"Check your network connection"];
+            return NO;
+        }
+        else if([userData objectForKey:@"error"] != nil)
+        {
+            NSString *code = [NSString stringWithFormat:@"error code:%@", [dict objectForKey:@"code"]];
+            NSString *error =  [dict objectForKey:@"error"];
+            [self showMessageWithTitle:code andMessage:error];
+            return NO;
+        }
+        else
+        {
+            ((Singleton *)[Singleton sharedInstance]).user = [[User alloc] initAfterLogin:userData];
+            return YES;
+        }
+    }
+}
+
+
 
 
 /*
@@ -62,6 +94,20 @@
  */
 
 
+
+
+
+
+- (void) showMessageWithTitle:(NSString *)title andMessage:(NSString *) message
+{
+    UIAlertView *mess = [[UIAlertView alloc] initWithTitle:title
+                                                      message:message
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles:nil];
+    
+    [mess show];
+}
 
 
 #pragma -- mark UITextFieldDelegate
@@ -80,9 +126,9 @@
     {
         [self resignFirstResponder];
         
-        [self loginUser];
+        BOOL doLogin = [self loginUser];
         
-        if(((Singleton*)[Singleton sharedInstance]).user.loggedIn)
+        if(doLogin)
         {
             [self performSegueWithIdentifier:@"FromLogin" sender:self];
         }

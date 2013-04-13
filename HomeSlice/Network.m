@@ -42,6 +42,14 @@
     return userData;
 }
 
+
+
+//returns:
+//$2 = 0x097e7850 {
+//    createdAt = "2013-04-11T22:38:20.010Z";
+//    objectId = smfGLNUdYE;
+//    sessionToken = m3tzxuo1wuihmbwk3jtpc7c0b;
+//}
 + (NSDictionary *) postObjectWithData:(NSDictionary *)postDict toURL:(NSString *)url
 {
     NSError *error;
@@ -73,11 +81,17 @@
     return dict;
 }
 
-
+//returns:
+//$3 = 0x0a36d6c0 {
+//    createdAt = "2013-04-01T02:13:26.967Z";
+//    objectId = ExZjvrA0X0;
+//    "person_id" = bkoh4zUL7s;
+//    sessionToken = nc1zppg0fi8lehrgz8i4768dp;
+//    updatedAt = "2013-04-01T02:13:27.328Z";
+//    username = "jmoyers14@gmail.com";
+//}
 + (NSDictionary *) makeLoginGetRequestWithData:(NSDictionary *)getDict toURL:(NSString *)url
 {
-    //NSError *error;
-    //NSData *getData = [NSJSONSerialization dataWithJSONObject:getDict options:NSJSONWritingPrettyPrinted error:&error];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     NSString *queryString = [self urlEncodeDictionary:getDict];
@@ -95,12 +109,12 @@
         if(err)
         {
             NSLog(@"Error posting object: %@", err.localizedDescription);
+            return nil;
         }
     }
     
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&err];
     
-   
     return dict;
 }
 

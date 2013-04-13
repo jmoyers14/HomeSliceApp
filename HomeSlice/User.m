@@ -17,28 +17,34 @@
 
 
 
--(id) initWithDictionary:(NSDictionary *)dict
+-(id) initAfterSignup:(NSDictionary *)dict
 {
     self = [super init];
     if(self)
     {
-        NSDictionary *userData;
-        self.username = [dict objectForKey:@"username"];
-        self.loggedIn = NO;
-        userData      = [self registerUserWithPassword:[dict objectForKey:@"password"]];
-        
-        if(self.loggedIn == YES)
-        {
-            self.userId   = [userData objectForKey:@"objectId"];
-            self.sessionToken = [userData objectForKey:@"sessionToken"];
-            self.person   = [[Person alloc] initWithName:[dict objectForKey:@"fullName"]];
-            [self createRelationShipForUser:self.userId andPerson:self.person.person_id];
-        }
+        self.username     = [dict objectForKey:@"username"];
+        self.userId       = [dict objectForKey:@"objectId"];
+        self.sessionToken = [dict objectForKey:@"sessionToken"];
+        self.person   = [[Person alloc] initWithName:[dict objectForKey:@"fullName"]];
+        [self createRelationShipForUser:self.userId andPerson:self.person.person_id];
         
     }
     return self;
 }
 
+
+-(id) initAfterLogin:(NSDictionary *)dict
+{
+    self = [super init];
+    if (self)
+    {
+        self.username     = [dict objectForKey:@"username"];
+        self.userId       = [dict objectForKey:@"objectId"];
+        self.sessionToken = [dict objectForKey:@"sessionToken"];
+        self.person       = [[Person alloc] initWithPersonId:[dict objectForKey:@"person_id"]];
+    }
+    return self;
+}
 
 /*
  *Init returning user

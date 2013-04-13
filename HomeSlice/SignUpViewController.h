@@ -22,6 +22,8 @@
 @property (nonatomic, strong) IBOutlet UILabel *passwordWarning;
 @property (nonatomic, strong) IBOutlet CustomTextField *fullName;
 
-- (void) submitUserInfo;
+- (BOOL) submitUserInfo;
+
+
 
 @end

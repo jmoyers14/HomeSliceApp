@@ -15,7 +15,7 @@
 @implementation CreateHouseViewController
 
 @synthesize houseName = _houseName;
-@synthesize housePassword = _housePassword;
+@synthesize houseKey = _houseKey;
 @synthesize confirmHousePassword = _confirmHousePassword;
 @synthesize rent = _rent;
 @synthesize user = _user;
@@ -32,10 +32,47 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void) createUtility
+- (void) createHouse
 {
+    NSString *name     = self.houseName.text;
+    NSString *key = self.houseKey.text;
+    NSString *rent     = self.rent.text;
     
+    
+    if([name isEqualToString:@""])
+    {
+        [self showMessageWithTitle:@"Input error" andMessage:@"please input a house name."];
+    }
+    else if([key isEqualToString:@""])
+    {
+        [self showMessageWithTitle:@"Input error" andMessage:@"please input a house key."];
+    }
+    else if([rent isEqualToString:@""])
+    {
+        [self showMessageWithTitle:@"Input error" andMessage:@"please input rent amount."];
+    }
+    else
+    {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        [dict setObject:name forKey:@"name"];
+        [dict setObject:rent forKey:@"rent"];
+        [dict setObject:key forKey:@"key"];
+        NSDictionary *returnData = [Network postObjectWithData:dict toURL:HOUSE_URL];
+    }
 }
+
+
+- (void) showMessageWithTitle:(NSString *)title andMessage:(NSString *) message
+{
+    UIAlertView *mess = [[UIAlertView alloc] initWithTitle:title
+                                                   message:message
+                                                  delegate:nil
+                                         cancelButtonTitle:@"OK"
+                                         otherButtonTitles:nil];
+    
+    [mess show];
+}
+
 
 #pragma -- mark UITextFieldDelegate
 

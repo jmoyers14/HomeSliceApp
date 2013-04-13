@@ -17,7 +17,9 @@
 @synthesize paymentHolder = _paymentHolder;
 @synthesize debt = _debt;
 
-
+/*
+ * create person object for users roommates
+ */
 -(id) initWithDictionary:(NSDictionary*) dict
 {
     self = [super init];
@@ -33,21 +35,37 @@
     return self;
 }
 
+
+/*
+ * initialize person after signup
+ */
 -(id) initWithName:(NSString *)fullName
 {
     self = [super init];
     if (self)
     {
         NSDictionary *dict;
-        self.name = fullName;
-        dict = [self postNewPerson:fullName];
-        self.person_id = [dict objectForKey:@"objectId"];
-        self.debt = [[dict objectForKey:@"debt"] floatValue];
+        NSMutableDictionary *postDict = [[NSMutableDictionary alloc] init];
+
+        [postDict setObject:fullName forKey:@"name"];
+        [postDict setObject:[NSNumber numberWithFloat:0.0] forKey:@"debt"];
+        [postDict setObject:[NSNumber numberWithFloat:0.0] forKey:@"rent"];
+        
+        dict = [Network postObjectWithData:postDict toURL:PERSON_URL];
+        
+        self.name          = fullName; 
+        self.person_id     = [dict objectForKey:@"objectId"];
+        self.debt          = [[dict objectForKey:@"debt"] floatValue];
         self.paymentHolder = @"0.00";
     }
     return self;
 }
 
+
+
+/*
+ * initialize person after login
+ */
 -(id) initWithPersonId:(NSString *)personId
 {
     self = [super init];
