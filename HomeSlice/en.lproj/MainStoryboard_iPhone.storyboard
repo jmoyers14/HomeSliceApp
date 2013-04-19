@@ -282,6 +282,15 @@
                                     <outlet property="delegate" destination="gIu-OB-NFq" id="bcD-6r-ah9"/>
                                 </connections>
                             </textField>
+                            <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="House Key" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9PF-cO-wNA" customClass="CustomTextField">
+                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="go"/>
+                                <connections>
+                                    <outlet property="delegate" destination="gIu-OB-NFq" id="Bq8-rE-Ihu"/>
+                                </connections>
+                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OUK-Bq-nE7">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="245" id="7lG-l7-JXl"/>
@@ -296,7 +305,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="cny-H2-n4w" kind="modal" identifier="FromCreateHouse" modalTransitionStyle="coverVertical" id="kay-zI-FEy"/>
+                                    <segue destination="cny-H2-n4w" kind="modal" identifier="FromCreateHouse" id="kay-zI-FEy"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="House Info" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k80-O4-2fR">
@@ -311,15 +320,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="jJd-d1-ZaQ" firstAttribute="trailing" secondItem="KuX-aL-oce" secondAttribute="trailing" type="default" id="6el-By-VE9"/>
-                            <constraint firstItem="1l9-Fq-gJq" firstAttribute="trailing" secondItem="2BR-jN-CWr" secondAttribute="trailing" type="default" id="LbE-Rl-2ew"/>
                             <constraint firstItem="k80-O4-2fR" firstAttribute="leading" secondItem="2BR-jN-CWr" secondAttribute="leading" type="default" id="NtJ-Ut-7ud"/>
+                            <constraint firstItem="9PF-cO-wNA" firstAttribute="top" secondItem="KuX-aL-oce" secondAttribute="top" constant="76" id="PoK-xo-HD2"/>
                             <constraint firstItem="jJd-d1-ZaQ" firstAttribute="top" secondItem="KuX-aL-oce" secondAttribute="top" type="default" id="Qzj-NT-HZM"/>
+                            <constraint firstItem="9PF-cO-wNA" firstAttribute="leading" secondItem="2BR-jN-CWr" secondAttribute="leading" type="default" id="Th4-NT-n6P"/>
+                            <constraint firstItem="9PF-cO-wNA" firstAttribute="trailing" secondItem="1l9-Fq-gJq" secondAttribute="trailing" type="default" id="WXo-GE-4WA"/>
                             <constraint firstItem="OUK-Bq-nE7" firstAttribute="leading" secondItem="KuX-aL-oce" secondAttribute="leading" constant="40" id="bqx-PA-fSD"/>
-                            <constraint firstItem="1l9-Fq-gJq" firstAttribute="leading" secondItem="2BR-jN-CWr" secondAttribute="leading" type="default" id="fYa-Ue-UHU"/>
                             <constraint firstItem="jJd-d1-ZaQ" firstAttribute="bottom" secondItem="KuX-aL-oce" secondAttribute="bottom" type="default" id="hVq-ri-dTd"/>
+                            <constraint firstItem="9PF-cO-wNA" firstAttribute="centerX" secondItem="jJd-d1-ZaQ" secondAttribute="centerX" type="default" id="hoA-oX-lx2"/>
                             <constraint firstAttribute="bottom" secondItem="OUK-Bq-nE7" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="jzu-sf-S6q"/>
-                            <constraint firstItem="2BR-jN-CWr" firstAttribute="centerX" secondItem="jJd-d1-ZaQ" secondAttribute="centerX" type="default" id="ntC-lr-DJr"/>
-                            <constraint firstItem="1l9-Fq-gJq" firstAttribute="top" secondItem="KuX-aL-oce" secondAttribute="top" constant="74" id="pII-MD-2fp"/>
+                            <constraint firstItem="9PF-cO-wNA" firstAttribute="leading" secondItem="1l9-Fq-gJq" secondAttribute="leading" type="default" id="l8D-Wf-xRD"/>
+                            <constraint firstItem="1l9-Fq-gJq" firstAttribute="top" secondItem="KuX-aL-oce" secondAttribute="top" constant="110" id="m9x-QA-and"/>
+                            <constraint firstItem="9PF-cO-wNA" firstAttribute="trailing" secondItem="2BR-jN-CWr" secondAttribute="trailing" type="default" id="qk7-Xi-H3C"/>
                             <constraint firstItem="jJd-d1-ZaQ" firstAttribute="leading" secondItem="KuX-aL-oce" secondAttribute="leading" type="default" id="rRL-gM-jNR"/>
                             <constraint firstItem="k80-O4-2fR" firstAttribute="top" secondItem="KuX-aL-oce" secondAttribute="top" constant="20" symbolic="YES" type="default" id="t3u-Qh-SpI"/>
                             <constraint firstItem="2BR-jN-CWr" firstAttribute="top" secondItem="KuX-aL-oce" secondAttribute="top" constant="43" id="tlQ-6b-db8"/>
@@ -328,6 +340,7 @@
                     <navigationItem key="navigationItem" id="Ake-rF-a5Q"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="houseKey" destination="9PF-cO-wNA" id="Yt8-vm-Q1E"/>
                         <outlet property="houseName" destination="2BR-jN-CWr" id="YXf-3T-ldA"/>
                         <outlet property="rent" destination="1l9-Fq-gJq" id="FPX-81-FeY"/>
                     </connections>
@@ -1110,6 +1123,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="6HQ-hg-T8R"/>
+        <segue reference="kay-zI-FEy"/>
     </inferredMetricsTieBreakers>
 </document>

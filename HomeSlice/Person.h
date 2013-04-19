@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSNumber *rent;
 @property (nonatomic, strong) House *house;
+@property (nonatomic, strong) NSString *house_id;
 @property (nonatomic, strong) NSString *paymentHolder;
 @property (nonatomic, assign) float debt;
 

@@ -30,7 +30,8 @@
 {
     [super viewDidLoad];
     //((Singleton *)[Singleton sharedInstance]).roommates = [[NSMutableDictionary alloc] init];
-    NSString *houseID = ((Singleton *)[Singleton sharedInstance]).user.person.house.house_id;
+    //NSString *houseID = ((Singleton *)[Singleton sharedInstance]).user.person.house.house_id;
+    NSString *houseID = ((Singleton *)[Singleton sharedInstance]).user.person.house_id;
     NSArray *roommateData = [[NSArray alloc] init];
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     [parameters setObject:houseID forKey:@"house_id"];
@@ -49,13 +50,14 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
+
     [self.tabBarController.tabBar setBackgroundImage:[UIImage imageNamed:@"TabBarBackgroundSelected.png"]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"NavBarTrim"] forBarMetrics:UIBarMetricsDefault];
 
-    NSString *houseID = ((Singleton *)[Singleton sharedInstance]).user.person.house.house_id;
-    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-    [parameters setObject:houseID forKey:@"house_id"];
-    [self makeGetRequestInBackgroundWithData:parameters toURL:PERSON_URL];
+//    NSString *houseID = ((Singleton *)[Singleton sharedInstance]).user.person.house_id;
+//    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+//    [parameters setObject:houseID forKey:@"house_id"];
+//    [self makeGetRequestInBackgroundWithData:parameters toURL:PERSON_URL];
 
 }
 

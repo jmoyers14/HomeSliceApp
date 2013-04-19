@@ -14,7 +14,8 @@
 
 @implementation JoinHouseViewController
 @synthesize houseName = _houseName;
-@synthesize user = _user;
+@synthesize user      = _user;
+@synthesize houseKey  = _houseKey;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -56,13 +57,48 @@
     {
         [self resignFirstResponder];
 
-        NSString *name = self.houseName.text;
-        [self.user.person joinHouseWithName:name];
+        BOOL doSegue = [self joinHouse];
         
-        [self performSegueWithIdentifier:@"FromJoinHouse" sender:self];
+        if(doSegue)
+            [self performSegueWithIdentifier:@"FromJoinHouse" sender:self];
     
     }
     return NO;
 }
+
+
+- (BOOL) joinHouse
+{
+    NSString *name = self.houseName.text;
+    NSString *key = self.houseKey.text;
+    
+    if([name isEqualToString:@""])
+    {
+        [self showMessageWithTitle:@"Input error" andMessage:@"please input a house name"];
+        return NO;
+    }
+    else if([key isEqualToString:@""])
+    {
+        [self showMessageWithTitle:@"Input error" andMessage:@"please input the unique house key for the house you wish to join"];
+        return NO;
+    }
+    else
+    {
+        [self.user.person joinHouseWithName:name];
+        return YES;
+    }
+}
+
+- (void) showMessageWithTitle:(NSString *)title andMessage:(NSString *) message
+{
+    UIAlertView *mess = [[UIAlertView alloc] initWithTitle:title
+                                                   message:message
+                                                  delegate:nil
+                                         cancelButtonTitle:@"OK"
+                                         otherButtonTitles:nil];
+    
+    [mess show];
+}
+
 
 @end

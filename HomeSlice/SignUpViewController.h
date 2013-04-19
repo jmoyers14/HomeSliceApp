@@ -24,6 +24,6 @@
 
 - (BOOL) submitUserInfo;
 
-
+- (BOOL) loginUser;
 
 @end

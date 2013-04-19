@@ -32,32 +32,54 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void) createHouse
+- (BOOL) createHouse
 {
     NSString *name     = self.houseName.text;
-    NSString *key = self.houseKey.text;
+    NSString *key      = self.houseKey.text;
     NSString *rent     = self.rent.text;
     
     
     if([name isEqualToString:@""])
     {
         [self showMessageWithTitle:@"Input error" andMessage:@"please input a house name."];
+        return NO;
     }
     else if([key isEqualToString:@""])
     {
         [self showMessageWithTitle:@"Input error" andMessage:@"please input a house key."];
+        return NO;
     }
     else if([rent isEqualToString:@""])
     {
         [self showMessageWithTitle:@"Input error" andMessage:@"please input rent amount."];
+        return NO;
     }
     else
     {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        [dict setObject:self.user.person.person_id forKey:@"person_id"];
         [dict setObject:name forKey:@"name"];
-        [dict setObject:rent forKey:@"rent"];
+        [dict setObject:[NSNumber numberWithFloat:[rent floatValue]] forKey:@"rent"];
         [dict setObject:key forKey:@"key"];
         NSDictionary *returnData = [Network postObjectWithData:dict toURL:HOUSE_URL];
+        
+        if(returnData == nil)
+        {
+            [self showMessageWithTitle:@"Error" andMessage:@"Check your network connection"];
+            return NO;
+        }
+        else if([returnData objectForKey:@"error"] != nil)
+        {
+            NSString *error = [returnData objectForKey:@"error"];
+            NSString *code = [NSString stringWithFormat:@"Error code:%@", [returnData objectForKey:@"code"]];
+            [self showMessageWithTitle:code andMessage:error];
+            return NO;
+        }
+        else
+        {
+            self.user.person.house_id = [returnData objectForKey:@"objectId"];
+            return YES;
+        }
     }
 }
 
@@ -89,12 +111,11 @@
     else if(textField == self.rent)
     {
         [self resignFirstResponder];
-        NSNumber *rent = [NSNumber numberWithFloat:self.rent.text.floatValue];
-        NSString *name = self.houseName.text;
-
-        [self.user.person createHouseNamed:name withRent:rent];
         
-        [self performSegueWithIdentifier:@"FromCreateHouse" sender:self];
+        BOOL doSegue = [self createHouse];
+        
+        if(doSegue)
+            [self performSegueWithIdentifier:@"FromCreateHouse" sender:self];
         
     }
     

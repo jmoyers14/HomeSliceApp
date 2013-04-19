@@ -126,8 +126,11 @@
     //NSData *getData = [NSJSONSerialization dataWithJSONObject:getDict options:NSJSONWritingPrettyPrinted error:&error];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    NSString *queryString = [self urlEncodeDictionary:getDict];
-    [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", url, queryString]]];
+    //NSString *queryString = [self urlEncodeDictionary:getDict];
+    NSString *queryString = [self encodeForWhere:getDict];
+    NSString *fullURL = [NSString stringWithFormat:@"%@?%@", url, queryString];
+    fullURL = [self urlEncode:fullURL];
+    [request setURL:[NSURL URLWithString:fullURL]];
     [request addValue:HTTP_APPID forHTTPHeaderField:@"X-Parse-Application-Id"];
     [request addValue:HTTP_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
     [request setValue:HTTP_CONT_TYPE forHTTPHeaderField:@"Content-Type"];
@@ -148,6 +151,23 @@
     
     NSArray *array = [dict objectForKey:@"results"];
     return array;
+}
+
+
++ (NSString *) encodeForWhere:(NSDictionary *)dict
+{
+    NSMutableArray *parts = [NSMutableArray array];
+    for(id key in dict)
+    {
+        id value = [dict objectForKey: key];
+        NSString *part = [NSString stringWithFormat:@"\"%@\":\"%@\"", key, value];
+        [parts addObject:part];
+    }
+    NSString *finalString = [parts componentsJoinedByString:@","];
+    finalString = [NSString stringWithFormat:@"where={%@}", finalString];
+    
+    return finalString;
+    
 }
 
 // helper function: get the string form of any object

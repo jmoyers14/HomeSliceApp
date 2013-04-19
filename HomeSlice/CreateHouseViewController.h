@@ -21,6 +21,6 @@
 @property (nonatomic, strong) User *user;
 
 
-- (void) createUtility;
-
+- (BOOL) createUtility;
+- (BOOL) createHouse;
 @end

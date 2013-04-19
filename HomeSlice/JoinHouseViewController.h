@@ -13,5 +13,6 @@
 
 @interface JoinHouseViewController : UIViewController <UITextFieldDelegate>
 @property (nonatomic, strong) IBOutlet CustomTextField *houseName;
+@property (nonatomic, strong) IBOutlet CustomTextField *houseKey;
 @property (nonatomic, strong) User *user;
 @end

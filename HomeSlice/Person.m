@@ -16,7 +16,7 @@
 @synthesize house = _house;
 @synthesize paymentHolder = _paymentHolder;
 @synthesize debt = _debt;
-
+@synthesize house_id = _house_id;
 /*
  * create person object for users roommates
  */
@@ -27,7 +27,8 @@
     {
         self.name = [dict objectForKey:@"name"];
         self.person_id = [dict objectForKey:@"objectId"];
-        self.house = [[House alloc] initWithHouseId:[dict objectForKey:@"houseId"]];
+        //self.house = [[House alloc] initWithHouseId:[dict objectForKey:@"houseId"]];
+        self.house_id = [dict objectForKey:@"houseId"];
         self.debt = [[dict objectForKey:@"debt"] floatValue];
         self.rent = [dict objectForKey:@"rent"];
         self.paymentHolder = @"0.00";
@@ -53,7 +54,7 @@
         
         dict = [Network postObjectWithData:postDict toURL:PERSON_URL];
         
-        self.name          = fullName; 
+        self.name          = fullName;
         self.person_id     = [dict objectForKey:@"objectId"];
         self.debt          = [[dict objectForKey:@"debt"] floatValue];
         self.paymentHolder = @"0.00";
@@ -82,7 +83,8 @@
         self.person_id = [personData objectForKey:@"objectId"];
         self.name = [personData objectForKey:@"name"];
         self.rent = [NSNumber numberWithFloat:[[personData objectForKey:@"rent"] floatValue]];
-        self.house = [[House alloc] initWithHouseId:(NSString *)[personData objectForKey:@"house_id"]];
+        //self.house = [[House alloc] initWithHouseId:(NSString *)[personData objectForKey:@"house_id"]];
+        self.house_id = [personData objectForKey:@"house_id"];
         self.paymentHolder = @"0.00";
         self.debt = 0.0;
     }
