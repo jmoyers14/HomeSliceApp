@@ -78,6 +78,13 @@
         else
         {
             self.user.person.house_id = [returnData objectForKey:@"objectId"];
+            
+            //set up roommate object
+            NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+            [parameters setObject:self.user.person.house_id forKey:@"house_id"];
+            NSArray *roomies = [Network makeGetRequestForPosts:parameters toURL:PERSON_URL];
+            [((Singleton *)[Singleton sharedInstance]) createRoomatesWithData:roomies];
+    
             return YES;
         }
     }

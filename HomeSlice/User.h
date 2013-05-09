@@ -10,6 +10,7 @@
 #import "Person.h"
 #import "constatns.h"
 #import "House.h"
+#import "FacebookSDK/FacebookSDK.h"
 
 @interface User : NSObject
 
@@ -25,7 +26,8 @@
 - (id) initWithLoginDictionary:(NSDictionary *)dict;
 - (id) initAfterLogin:(NSDictionary *)dict;
 
-
+- (id) initAfterFbLogin:(NSDictionary<FBGraphUser>*) user withData:(NSDictionary *)dict;
+- (id) initAfterFbSignup:(NSDictionary<FBGraphUser>*) user withDAta:(NSDictionary *)dict;
 
 - (NSDictionary *)registerUserWithPassword:(NSString *)password;
 - (NSDictionary *)createRelationShipForUser:(NSString *)userId andPerson:(NSString *)personId;

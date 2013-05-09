@@ -17,6 +17,7 @@
 @property (nonatomic, strong) User *user;
 @property (nonatomic, strong) House *house;
 @property (nonatomic, strong) NSMutableArray *roommates;
+@property (nonatomic, strong) NSMutableDictionary *roommatesDict;
 @property (nonatomic, strong) id<GAITracker> tracker;
 
 +(id)sharedInstance;

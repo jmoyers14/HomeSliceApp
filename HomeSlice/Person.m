@@ -17,6 +17,7 @@
 @synthesize paymentHolder = _paymentHolder;
 @synthesize debt = _debt;
 @synthesize house_id = _house_id;
+@synthesize fb_id = _fb_id;
 /*
  * create person object for users roommates
  */
@@ -31,6 +32,10 @@
         self.house_id = [dict objectForKey:@"houseId"];
         self.debt = [[dict objectForKey:@"debt"] floatValue];
         self.rent = [dict objectForKey:@"rent"];
+        
+        if([dict objectForKey:@"fb_id"] != nil)
+            self.fb_id = [dict objectForKey:@"fb_id"];
+        
         self.paymentHolder = @"0.00";
     }
     return self;
@@ -58,6 +63,32 @@
         self.person_id     = [dict objectForKey:@"objectId"];
         self.debt          = [[dict objectForKey:@"debt"] floatValue];
         self.paymentHolder = @"0.00";
+    }
+    return self;
+}
+/*
+ * initialize person after facebook signup
+ */
+-(id) initWithFBUser:(NSDictionary<FBGraphUser>*)user
+{
+    self = [super init];
+    if(self)
+    {
+        NSDictionary *dict;
+        NSMutableDictionary *postDict = [[NSMutableDictionary alloc] init];
+        
+        [postDict setObject:[user objectForKey:@"name"] forKey:@"name"];
+        [postDict setObject:[NSNumber numberWithFloat:0.0] forKey:@"debt"];
+        [postDict setObject:[NSNumber numberWithFloat:0.0] forKey:@"rent"];
+        [postDict setObject:[user objectForKey:@"id"] forKey:@"fb_id"];
+        
+        dict = [Network postObjectWithData:postDict toURL:PERSON_URL];
+        
+        self.name      = [dict objectForKey:@"name"];
+        self.person_id = [dict objectForKey:@"objectId"];
+        self.debt      = [[dict objectForKey:@"debt"] floatValue];
+        self.fb_id     = [dict objectForKey:@"fb_id"];
+
     }
     return self;
 }

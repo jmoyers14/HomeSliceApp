@@ -8,11 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-
+#import "LoginNavViewController.h"
+#import "LoginChoiceViewController.h"
+#import "DefaultViewController.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
+@property (strong, nonatomic) UITabBarController *mainTabController;
+@property (strong, nonatomic) UINavigationController *loginNavController;
+@property (strong, nonatomic) DefaultViewController *defaultView;
+
+
+- (void)openSession;
 
 
 @end

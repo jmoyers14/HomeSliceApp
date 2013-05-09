@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Network.h"
 #import "House.h"
+#import "FacebookSDK/FacebookSDK.h"
 
 @interface Person : NSObject
 @property (nonatomic, strong) NSString *person_id;
@@ -18,6 +19,8 @@
 @property (nonatomic, strong) NSString *house_id;
 @property (nonatomic, strong) NSString *paymentHolder;
 @property (nonatomic, assign) float debt;
+@property (nonatomic, strong) NSString *fb_id;
+
 
 - (id) initWithDictionary:(NSDictionary*) dict;
 - (NSDictionary *)postNewPerson:(NSString *)fullName;
@@ -28,5 +31,5 @@
 - (void) joinHouseWithName:(NSString *)name;
 - (NSDictionary *)updateDataByAmount:(float)amount;
 - (NSDictionary *)updateRentToAmount:(float)amount;
-
+-(id) initWithFBUser:(NSDictionary<FBGraphUser>*)user;
 @end

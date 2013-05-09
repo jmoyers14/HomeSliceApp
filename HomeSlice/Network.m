@@ -153,6 +153,80 @@
     return array;
 }
 
++ (NSArray *) makeGetRequestForPosts:(NSDictionary *)getDict toURL:(NSString *)url
+{
+    //NSError *error;
+    //NSData *getData = [NSJSONSerialization dataWithJSONObject:getDict options:NSJSONWritingPrettyPrinted error:&error];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    //NSString *queryString = [self urlEncodeDictionary:getDict];
+    NSString *queryString = [self encodeForWhere:getDict];
+    NSString *whereURL = [NSString stringWithFormat:@"%@?%@", url, queryString];
+    NSString *fullURL = [NSString stringWithFormat:@"%@&order=-createdAt", whereURL];
+    fullURL = [self urlEncode:fullURL];
+    [request setURL:[NSURL URLWithString:fullURL]];
+    [request addValue:HTTP_APPID forHTTPHeaderField:@"X-Parse-Application-Id"];
+    [request addValue:HTTP_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+    [request setValue:HTTP_CONT_TYPE forHTTPHeaderField:@"Content-Type"];
+    
+    NSURLResponse *response;
+    NSError *err;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+    
+    if(responseData == nil)
+    {
+        if(err)
+        {
+            NSLog(@"Error posting object: %@", err.localizedDescription);
+        }
+    }
+    
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&err];
+    
+    NSArray *array = [dict objectForKey:@"results"];
+    return array;
+}
+
+
+
++ (NSDictionary *) updateObjectWithId:(NSString *)objectId withData:(NSDictionary *)putDict toURL:(NSString*)urlString
+{
+    
+    NSError *error;
+    NSData *putData = [NSJSONSerialization dataWithJSONObject:putDict
+                                                      options:NSJSONWritingPrettyPrinted
+                                                        error:&error];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    NSString *url = [NSString stringWithFormat:@"%@/%@", urlString, objectId];
+    [request setURL:[NSURL URLWithString: url]];
+    
+    [request setHTTPMethod:@"PUT"];
+    [request addValue:HTTP_APPID forHTTPHeaderField:@"X-Parse-Application-Id"];
+    [request addValue:HTTP_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+    [request setValue:HTTP_CONT_TYPE forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:putData];
+    
+    NSURLResponse *response;
+    NSError *err;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+    
+    
+    if(responseData == nil)
+    {
+        if(err)
+        {
+            NSLog(@"Error setting person house relation: %@", error.localizedDescription);
+        }
+    }
+    else
+    {
+        
+    }
+    
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&err];
+    return dict;
+}
 
 + (NSString *) encodeForWhere:(NSDictionary *)dict
 {

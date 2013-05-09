@@ -16,7 +16,7 @@
 @synthesize sessionToken = _sessionToken;
 
 
-
+//init after email signup
 -(id) initAfterSignup:(NSDictionary *)dict
 {
     self = [super init];
@@ -32,7 +32,7 @@
     return self;
 }
 
-
+//init after email login
 -(id) initAfterLogin:(NSDictionary *)dict
 {
     self = [super init];
@@ -42,6 +42,36 @@
         self.userId       = [dict objectForKey:@"objectId"];
         self.sessionToken = [dict objectForKey:@"sessionToken"];
         self.person       = [[Person alloc] initWithPersonId:[dict objectForKey:@"person_id"]];
+    }
+    return self;
+}
+
+
+- (id) initAfterFbLogin:(NSDictionary<FBGraphUser>*) user withData:(NSDictionary *)dict
+{
+    self = [super init];
+    if (self)
+    {
+        self.username     = [dict objectForKey:@"username"];
+        self.userId       = [dict objectForKey:@"objectId"];
+        self.sessionToken = [dict objectForKey:@"sessionToken"];
+        self.person       = [[Person alloc] initWithPersonId:[dict objectForKey:@"person_id"]];
+    }
+    return self;
+}
+
+- (id) initAfterFbSignup:(NSDictionary<FBGraphUser>*) user withDAta:(NSDictionary *)dict
+{
+    self = [super init];
+    if (self)
+    {
+        self.username     = [dict objectForKey:@"username"];
+        self.userId       = [dict objectForKey:@"objectId"];
+        self.sessionToken = [dict objectForKey:@"sessionToken"];
+        
+        //self.person   = [[Person alloc] initWithName:user.name];
+        self.person       = [[Person alloc] initWithFBUser:user];
+        [self createRelationShipForUser:self.userId andPerson:self.person.person_id];
     }
     return self;
 }

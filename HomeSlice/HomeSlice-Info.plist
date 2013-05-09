@@ -31,8 +31,25 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.HomeSlice.HomeSlice</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb248620598614870</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1.01</string>
+	<key>FacebookAppID</key>
+	<string>248620598614870</string>
+	<key>FacebookDisplayName</key>
+	<string>HomeSlice</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>

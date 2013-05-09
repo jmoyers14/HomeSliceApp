@@ -33,8 +33,8 @@
     if ([tabBar respondsToSelector:@selector(setBackgroundImage:)])
     {
         // ios 5 code here
-        [tabBar setBackgroundImage:[UIImage imageNamed:@"TabBarBackgroundBlank.png"]];
-        
+        //[tabBar setBackgroundImage:[UIImage imageNamed:@"TabBarBackgroundBlank.png"]];
+        [tabBar setBackgroundImage:[UIImage imageNamed:@"TabBarBlue@2x.png"]];
     }
     else
     {
@@ -42,7 +42,7 @@
         NSLog(@"goin onld school");
         CGRect frame = CGRectMake(0, 0, 480, 49);
         UIView *tabbg_view = [[UIView alloc] initWithFrame:frame];
-        UIImage *tabbag_image = [UIImage imageNamed:@"TabBarBackgroundBlank.png"];
+        UIImage *tabbag_image = [UIImage imageNamed:@"TabBarBlue@2x.png"];
         UIColor *tabbg_color = [[UIColor alloc] initWithPatternImage:tabbag_image];
         tabbg_view.backgroundColor = tabbg_color;
         [tabBar insertSubview:tabbg_view atIndex:0];
@@ -59,7 +59,8 @@
 }
 
 
-- (void)tabBarController:(UITabBarController *)theTabBarController didSelectViewController:(UIViewController *)viewController {
+- (void)tabBarController:(UITabBarController *)theTabBarController didSelectViewController:(UIViewController *)viewController
+{
     NSUInteger indexOfTab = [theTabBarController.viewControllers indexOfObject:viewController];
     NSLog(@"Tab index = %u (%u)", indexOfTab);
 }

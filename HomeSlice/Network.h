@@ -21,5 +21,6 @@
 + (NSString *) toString:(id)object;
 + (NSString *)urlEncode:(id)object;
 + (NSDictionary *) makeLoginGetRequestWithData:(NSDictionary *)getDict toURL:(NSString *)url;
-
++ (NSArray *) makeGetRequestForPosts:(NSDictionary *)getDict toURL:(NSString *)url;
++ (NSDictionary *) updateObjectWithId:(NSString *)objectId withData:(NSDictionary *)putDict toURL:(NSString*)urlString;
 @end

@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SuppliesViewController : UIViewController
+@interface SuppliesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+
+@property (nonatomic, strong) IBOutlet UITableView *tView;
+@property (nonatomic, strong) NSMutableArray *supplies;
 
 @end

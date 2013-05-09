@@ -42,6 +42,8 @@
     
 }
 
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -51,7 +53,7 @@
 - (void) viewDidAppear:(BOOL)animated
 {
 
-    [self.tabBarController.tabBar setBackgroundImage:[UIImage imageNamed:@"TabBarBackgroundSelected.png"]];
+    //[self.tabBarController.tabBar setBackgroundImage:[UIImage imageNamed:@"TabBarBackgroundSelected.png"]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"NavBarTrim"] forBarMetrics:UIBarMetricsDefault];
 
 //    NSString *houseID = ((Singleton *)[Singleton sharedInstance]).user.person.house_id;

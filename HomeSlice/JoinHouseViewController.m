@@ -29,7 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.spinner.hidden = YES;
     self.user = ((Singleton *)[Singleton sharedInstance]).user;
     
     
@@ -43,6 +43,7 @@
 
 #pragma - mark text view delegate
 
+
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
 {
     NSInteger nextTag = textField.tag + 1;
@@ -53,12 +54,13 @@
     {
         [nextResponder becomeFirstResponder];
     }
-    else if(textField == self.houseName)
+    else if(textField == self.houseKey)
     {
+        [self.spinner startAnimating];
         [self resignFirstResponder];
 
         BOOL doSegue = [self joinHouse];
-        
+        [self.spinner stopAnimating];
         if(doSegue)
             [self performSegueWithIdentifier:@"FromJoinHouse" sender:self];
     
@@ -84,7 +86,36 @@
     }
     else
     {
-        [self.user.person joinHouseWithName:name];
+        NSMutableDictionary *houseDict = [[NSMutableDictionary alloc] init];
+        [houseDict setObject:name forKey:@"name"];
+        [houseDict setObject:key  forKey:@"key"];
+        NSArray *returnArray = [Network makeGetRequestWithData:houseDict toURL:HOUSE_URL];
+        NSDictionary *dict = [returnArray objectAtIndex:0];
+        
+        if(dict == nil)
+        {
+            [self showMessageWithTitle:@"error:" andMessage:@"check network connection"];
+            return NO;
+        }
+        if ([dict objectForKey:@"error"] != nil)
+        {
+            NSString *code = [NSString stringWithFormat:@"Error code:%@", [dict objectForKey:@"code"]];
+            NSString *message = [dict objectForKey:@"error"];
+            [self showMessageWithTitle:code andMessage:message];
+            return NO;
+        }
+        else
+        {
+            NSString *houseId = [dict objectForKey:@"objectId"];
+            self.user.person.house_id = houseId;
+            [self.user.person createRelationshipForPersonWithHouse:houseId];
+            
+            //set up roommate objects
+            NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+            [parameters setObject:houseId forKey:@"house_id"];
+            NSArray *roomies = [Network makeGetRequestForPosts:parameters toURL:PERSON_URL];
+            [((Singleton *)[Singleton sharedInstance]) createRoomatesWithData:roomies];
+        }
         return YES;
     }
 }
